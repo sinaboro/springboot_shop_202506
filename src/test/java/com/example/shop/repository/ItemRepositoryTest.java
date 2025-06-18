@@ -82,4 +82,22 @@ class ItemRepositoryTest {
         List<Item> itemList= itemRepository.findByPriceLessThan(10005);
         itemList.forEach(item-> log.info("item : {}", item.toString()));
     }
+
+    @Test
+    @DisplayName("@Query를 이용한 상품 조회 테스트")
+    public void findByItemDetailTest(){
+        this.createItemList();
+
+        List<Item> itemList= itemRepository.findByItemDetail("설명1");
+        itemList.forEach(item-> log.info("item : {}", item.toString()));
+    }
+
+    @Test
+    @DisplayName("@Query Native를 이용한 상품 조회 테스트")
+    public void findByItemDetailByNativeTest(){
+        this.createItemList();
+
+        List<Item> itemList= itemRepository.findByItemDetailByNative("설명1");
+        itemList.forEach(item-> log.info("item : {}", item.toString()));
+    }
 }
