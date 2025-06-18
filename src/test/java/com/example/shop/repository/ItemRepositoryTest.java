@@ -33,7 +33,6 @@ class ItemRepositoryTest {
 
         Item savedItem = itemRepository.save(item);
 
-
         log.info("savedItem : {}", savedItem.toString());
     }
 }
