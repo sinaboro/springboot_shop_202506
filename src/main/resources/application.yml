@@ -17,6 +17,16 @@ spring:
         show_sql: true
         format_sql: true
 
+  devtools:
+    livereload:
+      enabled: true
+
+  #Live Reload 기능 활성화
+  thymeleaf:
+    cache: false
+
+#Thymeleaf cache 사용 중지
+
 # 쿼리에 물음표로 출력되는 바인드 파라미터 출력
 logging:
   level:
