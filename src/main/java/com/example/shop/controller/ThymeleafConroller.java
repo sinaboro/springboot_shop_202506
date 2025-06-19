@@ -18,6 +18,9 @@ public class ThymeleafConroller {
     @GetMapping(value = "/ex01")
     public String ThymeleafExample01(Model model) {
         model.addAttribute("data", "타임리프 예제입니다.");
+
+        model.addAttribute("message", "<strong>굵은글씨</strong>");
+
         return "thymeleafEx/thymeleafEx01";
     }
 
