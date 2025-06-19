@@ -85,15 +85,25 @@ public class ThymeleafConroller {
 
     /*
     @GetMapping(value = "/ex06")
-    public String ThymeleafExample06(@RequestParam("param1") String p1,
-                                     @RequestParam("param2") String p2,
+    public String ThymeleafExample06(@RequestParam("param1") String param1,
+                                     @RequestParam("param2") String param2,
                                      Model model) {
      */
     @GetMapping(value = "/ex06")
-    public String ThymeleafExample06( String param1,String param2,Model model) {
+    public String ThymeleafExample06( String param1, String param2,Model model) {
         model.addAttribute("param1", param1);
         model.addAttribute("param2", param2);
         return "thymeleafEx/thymeleafEx06";
+    }
+
+    @GetMapping(value = "/ex07")
+    public String ThymeleafExample07() {
+        return "thymeleafEx/thymeleafEx07";
+    }
+
+    @GetMapping(value = "/ex07_1")
+    public String ThymeleafExample07_1() {
+        return "thymeleafEx/thymeleafEx07_1";
     }
 
 }
