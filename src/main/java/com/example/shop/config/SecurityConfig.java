@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.util.matcher.AndRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -44,11 +46,13 @@ public class SecurityConfig {
                                 .failureUrl("/members/login/error")
 
                 )
-                .logout(logout->
-                        logout.logoutSuccessUrl("/members/logout")
+                .logout(logout -> logout
+                        .logoutUrl("/members/logout") // 변경된 부분: logoutRequestMatcher 대신 logoutUrl 사용
                         .logoutSuccessUrl("/")
-                );
 
+                        .invalidateHttpSession(true) // 세션 무효화 (선택 사항이지만 일반적으로 사용)
+                        .deleteCookies("JSESSIONID") // 쿠키 삭제 (선택 사항이지만 일반적으로 사용)
+                );
 
         return http.build();
     }
