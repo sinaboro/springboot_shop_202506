@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -24,7 +25,25 @@ public class SecurityConfig {
                 .csrf(csrf-> csrf.disable())
 
                 .authorizeHttpRequests(
-                        auth-> auth.anyRequest().permitAll());
+                        auth-> auth.anyRequest().permitAll())
+
+                .formLogin(
+                        form->form.loginPage("/members/login")
+                                .defaultSuccessUrl("/")
+
+                                //login화면에서 name=username이면 생략가능
+                                //username -> email쓰기 때문에 반드시 기입해야함
+                                .usernameParameter("email")
+//                                .passwordParameter("password")
+                                .failureUrl("/members/login/error")
+
+                )
+                .logout(logout->
+                        logout.logoutSuccessUrl("/members/logout")
+                        .logoutSuccessUrl("/")
+                );
+
+
 
         return http.build();
     }
