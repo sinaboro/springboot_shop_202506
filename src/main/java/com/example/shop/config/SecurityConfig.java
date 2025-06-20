@@ -22,10 +22,16 @@ public class SecurityConfig {
         log.info("---------------Security Filter Chain--------------------");
 
         http
-                .csrf(csrf-> csrf.disable())
-
                 .authorizeHttpRequests(
-                        auth-> auth.anyRequest().permitAll())
+                        config -> config
+                                .requestMatchers("/css/**", "/js/**", "/images/**" ).permitAll()
+                                .requestMatchers("/", "/members/**", "/item/**").permitAll()
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .anyRequest().authenticated()
+                );
+
+        http
+                .csrf(csrf-> csrf.disable())
 
                 .formLogin(
                         form->form.loginPage("/members/login")
@@ -42,7 +48,6 @@ public class SecurityConfig {
                         logout.logoutSuccessUrl("/members/logout")
                         .logoutSuccessUrl("/")
                 );
-
 
 
         return http.build();
