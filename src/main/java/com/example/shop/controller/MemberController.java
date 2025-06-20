@@ -3,11 +3,13 @@ package com.example.shop.controller;
 import com.example.shop.dto.MemberFormDto;
 import com.example.shop.entity.Member;
 import com.example.shop.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,10 +32,22 @@ public class MemberController {
     }
 
     @PostMapping(value = "/new")
-    public String MemberForm(MemberFormDto memberFormDto) {
-        Member member = Member.createMember(memberFormDto, passwordEncoder);
+    public String MemberForm(@Valid MemberFormDto memberFormDto,
+                             BindingResult bindingResult, Model model) {
 
-        memberService.save(member);
+        if (bindingResult.hasErrors()) {
+            return "member/memberForm";
+        }
+
+        try {
+
+            Member member = Member.createMember(memberFormDto, passwordEncoder);
+            memberService.save(member);
+
+        }catch(IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "member/memberForm";
+        }
 
         return "redirect:/";
     }
