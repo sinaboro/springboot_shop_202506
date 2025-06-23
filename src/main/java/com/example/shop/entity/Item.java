@@ -17,6 +17,7 @@ public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="item_id")
     private Long id;  //상품 코드
 
     @Column(nullable = false, length = 50)
@@ -37,7 +38,7 @@ public class Item {
     
     private LocalDateTime regTime; //등록 시간
     
-    private LocalDateTime updateTiem; //수정 시간
+    private LocalDateTime updateTime; //수정 시간
     
     
     
