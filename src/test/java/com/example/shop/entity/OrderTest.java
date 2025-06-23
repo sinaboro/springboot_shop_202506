@@ -3,11 +3,13 @@ package com.example.shop.entity;
 import com.example.shop.constant.ItemSellStatus;
 import com.example.shop.dto.MemberFormDto;
 import com.example.shop.repository.ItemRepository;
+import com.example.shop.repository.MemberRepository;
 import com.example.shop.repository.OrderRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,7 +32,43 @@ class OrderTest {
 
     @PersistenceContext
     EntityManager em;
+
+    @Autowired
+    MemberRepository memberRepository;
+
     static int i=1;
+
+    public Order crateOrder(){
+        Order order = new Order();
+
+        for(int i=0; i<3; i++){
+            Item item = createItem();
+            itemRepository.save(item);
+
+            OrderItem orderItem = new OrderItem();
+            orderItem.setItem(item);
+            orderItem.setCount(10);
+            orderItem.setOrderPrice(1000);
+            orderItem.setOrder(order);
+            order.getOrderItems().add(orderItem);
+        }
+
+        Member member = new Member();
+        memberRepository.save(member);
+
+        order.setMember(member);
+        orderRepository.save(order);
+
+        return order;
+    }
+
+    @Test
+    @DisplayName("고아객체 제거 테스트")
+    public void orphanRemovalTest(){
+        Order order = crateOrder();
+        order.getOrderItems().remove(0);
+        em.flush();
+    }
 
     public Item createItem(){
         Item item = new Item();
