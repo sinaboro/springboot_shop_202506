@@ -4,6 +4,7 @@ import com.example.shop.constant.ItemSellStatus;
 import com.example.shop.dto.MemberFormDto;
 import com.example.shop.repository.ItemRepository;
 import com.example.shop.repository.MemberRepository;
+import com.example.shop.repository.OrderItemRepository;
 import com.example.shop.repository.OrderRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -24,6 +25,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 class OrderTest {
 
+    private static int i=1;
+
     @Autowired
     OrderRepository orderRepository;
 
@@ -36,7 +39,27 @@ class OrderTest {
     @Autowired
     MemberRepository memberRepository;
 
-    static int i=1;
+    @Autowired
+    OrderItemRepository orderItemRepository;
+
+    @Test
+    @DisplayName("지연 로딩 테스트")
+    public void lazyLodingTest(){
+        Order order = this.crateOrder();
+
+        Long OrderItemId = order.getOrderItems().get(0).getId();
+
+        log.info("OrderItemId ==> {}", OrderItemId);
+
+        em.flush();
+        em.clear();
+
+        OrderItem orderItem = orderItemRepository.findById(OrderItemId)
+                .orElseThrow(() -> new EntityNotFoundException("id값 없음"));
+
+        log.info("orderItem  ==>  {}", orderItem);
+        log.info("order class ==>  {}", orderItem.getOrder().getClass());
+    }
 
     public Order crateOrder(){
         Order order = new Order();
