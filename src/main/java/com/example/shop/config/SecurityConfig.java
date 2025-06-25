@@ -28,7 +28,7 @@ public class SecurityConfig {
                         config -> config
                                 .requestMatchers("/css/**", "/js/**", "/images/**" ).permitAll()
                                 .requestMatchers("/", "/members/**", "/item/**").permitAll()
-                                .requestMatchers("/admin/**").permitAll()  //hasRole("ADMIN")
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 );
 

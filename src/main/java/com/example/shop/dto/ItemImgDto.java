@@ -24,6 +24,7 @@ public class ItemImgDto {
 
     //ItemImg 객체를 전달받아서, modelMapper이 ItemImg객체를 ItemImgDto객체로 자동 변환
     public static ItemImgDto of(ItemImg itemImg) {
+
         return modelMapper.map(itemImg, ItemImgDto.class);
     }
 }
