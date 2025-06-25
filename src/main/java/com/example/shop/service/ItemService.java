@@ -35,9 +35,16 @@ public class ItemService {
             ItemImg itemImg = new ItemImg();
 
             itemImg.setItem(item);
+
+            if( itemImgFileList.get(0).equals(multipartFile)){
+                itemImg.setRepimgYn("Y");  // 메인페이지 보여줄 대표이미지
+            }else{
+                itemImg.setRepimgYn("N");
+            }
+            itemImgService.saveItemImg(itemImg, multipartFile);
         }
 
-        return null;
+        return item.getId();
     }
 
 }

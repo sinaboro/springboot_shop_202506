@@ -21,7 +21,7 @@ public class FileService {
 
         log.info("originalFileName.substring : {}", extension);
 
-        String savedFileName = uuid.toString()+extension;
+        String savedFileName = uuid.toString()+ extension;
 
        String fileUploadFullUrl = uploadPath + "/" + savedFileName;
 
