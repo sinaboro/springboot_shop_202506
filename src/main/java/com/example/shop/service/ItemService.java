@@ -35,6 +35,7 @@ public class ItemService {
 
         //이미지 등록
         for(MultipartFile multipartFile : itemImgFileList) {
+
             ItemImg itemImg = new ItemImg();
 
             itemImg.setItem(item);
@@ -97,7 +98,9 @@ public class ItemService {
         item.upateItem(itemFormDto);
         
         //상품 이미지 수정
-        List<Long> itemImgIds = itemFormDto.getItemImgId();
+        List<Long> itemImgIds = itemFormDto.getItemImgIds();
+
+        log.info("itemImgIds : {}",itemImgIds);
 
         for(int i=0; i<itemImgIds.size(); i++) {
             itemImgService.updateItemImg(itemImgIds.get(i), itemImgFileList.get(i));

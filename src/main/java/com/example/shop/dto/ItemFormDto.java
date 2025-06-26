@@ -43,7 +43,7 @@ public class ItemFormDto {
        이미지 수정시 특정 상품에서 전체 이미지를 수정하지 않고 ,
        개별 이미지를 수정하기 위한 용도로 item_img_id를 가지고 있기 위해서
     */
-    private List<Long> itemImgId = new ArrayList<>();
+    private List<Long> itemImgIds = new ArrayList<>();
 
     private static ModelMapper modelMapper = new ModelMapper();
 
