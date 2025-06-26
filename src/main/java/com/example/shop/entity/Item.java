@@ -8,6 +8,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "item")
@@ -36,6 +38,9 @@ public class Item extends BaseEntity {
 
     @Enumerated(EnumType.STRING) //필수
     private ItemSellStatus itemSellStatus; //상품 판매 상태
+
+//    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+//    private List<ItemImg> itemImgs = new ArrayList<>();
 
     public void upateItem(ItemFormDto itemFormDto) {
         this.itemNm = itemFormDto.getItemNm();
