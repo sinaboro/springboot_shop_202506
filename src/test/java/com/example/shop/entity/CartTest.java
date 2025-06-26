@@ -57,8 +57,8 @@ class CartTest {
         cart.setMember(member);
         cartRepository.save(cart);   //카트 저장
 
-        //em.flush();  //영속컨텍스트 있는 데이타를 DB저장
-        //em.clear(); //영속컨텍스트 클리어
+        em.flush();  //영속컨텍스트 있는 데이타를 DB저장
+        em.clear(); //영속컨텍스트 클리어
 
         Cart savedCart = cartRepository.findById(cart.getId())
                 .orElseThrow(()-> new EntityNotFoundException("해당 ID가 존재하지 않아요"));
