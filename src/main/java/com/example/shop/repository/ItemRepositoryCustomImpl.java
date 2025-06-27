@@ -72,7 +72,7 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
 
         QueryResults<Item> results = queryFactory
-                .select(QItem.item)
+                .selectFrom(QItem.item)
                 .where(
                         regDtsAfter(itemSearchDto.getSearchDateType())
                         , searchSellStatusEq(itemSearchDto.getItemSellStatus())
