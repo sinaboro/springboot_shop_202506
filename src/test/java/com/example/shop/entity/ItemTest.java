@@ -16,21 +16,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 @Slf4j
 class ItemTest {
 
     @Autowired
     private ItemRepository itemRepository;
+    @Autowired
+    private ItemImgRepository itemImgRepository;
 
     @Autowired
     EntityManager em;
 
     JPAQueryFactory queryFactory;
-    @Autowired
-    private ItemImgRepository itemImgRepository;
 
     @BeforeEach
     void setUp() {
@@ -121,6 +119,7 @@ class ItemTest {
             builder.and(qItem.price.gt(minPrice));
         }
 
+        log.info("builder :  {} ", builder.toString());
         List<Item> items = queryFactory
                 .selectFrom(qItem)
                 .where(builder)
