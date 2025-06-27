@@ -2,8 +2,11 @@ package com.example.shop.repository;
 
 import com.example.shop.constant.ItemSellStatus;
 import com.example.shop.dto.ItemSearchDto;
+import com.example.shop.dto.MainItemDto;
+import com.example.shop.dto.QMainItemDto;
 import com.example.shop.entity.Item;
 import com.example.shop.entity.QItem;
+import com.example.shop.entity.QItemImg;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -34,21 +37,19 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
     private BooleanExpression regDtsAfter(String searchDateType) {
 
-        LocalDateTime dateTime = LocalDateTime.now();
+        LocalDateTime dateTime = LocalDateTime.now();  //현재시간
 
-        if(StringUtils.equals("all", searchDateType) ||
-         searchDateType == null) {
+        if(StringUtils.equals("all", searchDateType) || searchDateType == null){
             return null;
-        }else if(StringUtils.equals("1d", searchDateType)){
+        } else if (StringUtils.equals("1d", searchDateType)) {
             dateTime = dateTime.minusDays(1);
-        }else if(StringUtils.equals("1w", searchDateType)){
+        } else if (StringUtils.equals("1w", searchDateType)) {
             dateTime = dateTime.minusWeeks(1);
-        }else if(StringUtils.equals("1m", searchDateType)){
+        } else if (StringUtils.equals("1m", searchDateType)) {
             dateTime = dateTime.minusMonths(1);
-        }else if(StringUtils.equals("6m", searchDateType)){
-            dateTime = dateTime.minusDays(6);
+        } else if (StringUtils.equals("6m", searchDateType)) {
+            dateTime = dateTime.minusMonths(6);
         }
-
         return QItem.item.regTime.after(dateTime);
     }
 
@@ -88,4 +89,39 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
 
         return new PageImpl<>(content, pageable, total);
     }
+
+    private BooleanExpression itemNmLike(String searchQuery){
+        return StringUtils.isEmpty(searchQuery) ?
+                null :
+                QItem.item.itemNm.contains(searchQuery);
+    }
+
+    @Override
+    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto, Pageable pageable) {
+
+        QItem item = QItem.item;
+        QItemImg itemImg = QItemImg.itemImg;
+
+        QueryResults<MainItemDto> results = queryFactory
+                .select(
+                        new QMainItemDto(
+                                item.id,
+                                item.itemNm,
+                                item.itemDetail,
+                                itemImg.imgUrl,
+                                item.price
+                        )
+                )
+                .from(itemImg)
+                .join(itemImg.item, item)
+                .where(itemImg.repimgYn.eq("Y"))
+                .where(itemNmLike(itemSearchDto.getSearchQuery()))
+                .orderBy(item.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        return null;
+    }
+
 }

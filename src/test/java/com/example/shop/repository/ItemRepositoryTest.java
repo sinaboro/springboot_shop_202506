@@ -118,7 +118,7 @@ class ItemRepositoryTest {
 
         // Given: 테스트를 위한 초기 상태 설정
         ItemSearchDto   searchDto = new ItemSearchDto();
-        searchDto.setSearchDateType("all");
+        searchDto.setSearchDateType("1w");
         searchDto.setItemSellStatus(ItemSellStatus.SELL);
 //        searchDto.setSearchBy("itemNm");
 //        searchDto.setSearchQuery("자바");
@@ -129,10 +129,13 @@ class ItemRepositoryTest {
         Page<Item> result = itemRepository.getAdminItemPage(searchDto, pageRequest);
 
         // Then: 실행 결과 검증
+
+        result.getContent().forEach(item-> log.info("item : {}", item.toString()));
+
         assertThat(result.getTotalElements()).isEqualTo(7);
         assertThat(result.getContent().size()).isEqualTo(5);
 //        assertThat(result.getContent().get(0).getItemNm()).contains("자바");
 
-        result.getContent().forEach(item-> log.info("item : {}", item.toString()));
+
     }
 }

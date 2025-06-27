@@ -2,6 +2,7 @@ package com.example.shop.service;
 
 import com.example.shop.dto.ItemFormDto;
 import com.example.shop.dto.ItemImgDto;
+import com.example.shop.dto.ItemSearchDto;
 import com.example.shop.entity.Item;
 import com.example.shop.entity.ItemImg;
 import com.example.shop.repository.ItemImgRepository;
@@ -9,6 +10,8 @@ import com.example.shop.repository.ItemRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -107,6 +110,11 @@ public class ItemService {
         }
 
         return item.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Item> getAdminItemPage(ItemSearchDto searchDto, Pageable pageable) {
+        return itemRepository.getAdminItemPage(searchDto, pageable);
     }
 
 }
