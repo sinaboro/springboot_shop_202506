@@ -121,7 +121,10 @@ public class ItemRepositoryCustomImpl implements ItemRepositoryCustom {
                 .limit(pageable.getPageSize())
                 .fetchResults();
 
-        return null;
+        List<MainItemDto> content = results.getResults();
+        long total = results.getTotal();
+
+        return new PageImpl<>(content, pageable, total);
     }
 
 }
