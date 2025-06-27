@@ -87,6 +87,7 @@ public class ItemService {
 
 
         ItemFormDto itemFormDto = ItemFormDto.of(item);
+
         itemFormDto.setItemImgDtoList(itemImgDtoList);
 
         return itemFormDto;

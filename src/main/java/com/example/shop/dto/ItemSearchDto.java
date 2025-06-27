@@ -3,6 +3,7 @@ package com.example.shop.dto;
 import com.example.shop.constant.ItemSellStatus;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter@Setter
 public class ItemSearchDto {
