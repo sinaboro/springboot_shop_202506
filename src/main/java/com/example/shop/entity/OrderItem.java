@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="order_item")
 @Getter@Setter
-@ToString()
+@ToString(exclude = "order")
 public class OrderItem  extends BaseEntity{
 
     @Id

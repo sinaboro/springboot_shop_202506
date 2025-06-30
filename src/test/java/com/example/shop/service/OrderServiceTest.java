@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-//@Transactional //DB저정하지마세요
+@Transactional //DB저정하지마세요
 @Slf4j
 @WithMockUser(username = "user1@user.com", roles = "ADMIN")
 class OrderServiceTest {
