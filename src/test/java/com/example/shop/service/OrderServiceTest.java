@@ -6,7 +6,6 @@ import com.example.shop.repository.OrderItemRepository;
 import com.example.shop.repository.OrderRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,6 +33,7 @@ class OrderServiceTest {
     private OrderRepository orderRepository;
 
     @Transactional
+//    @Rollback(false)
     @Test
     public void test() {
 
