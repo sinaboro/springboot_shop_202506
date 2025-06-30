@@ -6,16 +6,23 @@ import com.example.shop.repository.OrderItemRepository;
 import com.example.shop.repository.OrderRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional //DB저정하지마세요
+//@Transactional //DB저정하지마세요
 @Slf4j
 @WithMockUser(username = "user1@user.com", roles = "ADMIN")
 class OrderServiceTest {
@@ -34,7 +41,7 @@ class OrderServiceTest {
 
         OrderDto orderDto = new OrderDto();
 
-        orderDto.setCount(1);
+        orderDto.setCount(2);
         orderDto.setItemId(1L);
 
         Long order = orderService.order(orderDto, email);
