@@ -63,8 +63,6 @@ public class OrderService {
 
         List<Order> orders = orderRepository.findOrders(email, pageable);
 
-        orders.forEach(order -> log.info(order.toString()));
-
         Long totalCount = orderRepository.countOrder(email);
 
         List<OrderHistDto> orderHistDtoList = new ArrayList<>();
@@ -73,6 +71,10 @@ public class OrderService {
             OrderHistDto orderHistDto = new OrderHistDto(order);
 
             List<OrderItem> orderItems = order.getOrderItems();
+
+            log.info("---------------------------------");
+            log.info("orderItems.size() : {}", orderItems.size());
+            log.info("---------------------------------");
 
             for (OrderItem orderItem : orderItems) {
                
