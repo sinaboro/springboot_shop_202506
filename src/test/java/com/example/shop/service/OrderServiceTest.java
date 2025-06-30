@@ -1,6 +1,7 @@
 package com.example.shop.service;
 
 import com.example.shop.dto.OrderDto;
+import com.example.shop.dto.OrderHistDto;
 import com.example.shop.entity.Order;
 import com.example.shop.repository.OrderItemRepository;
 import com.example.shop.repository.OrderRepository;
@@ -9,6 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -54,5 +58,19 @@ class OrderServiceTest {
         log.info("---------savedOrder---------- : {}", savedOrder);
 
         savedOrder.getOrderItems().forEach(orderItem -> {log.info("OrderItem: {}", orderItem);});
+    }
+
+    @Transactional
+    @Test
+    public void getOrderListTest(){
+
+        String email = "user1@user.com";
+
+        Pageable pageable = PageRequest.of(1, 5);
+
+        Page<OrderHistDto> orderHistDtoList = orderService.getOrderList(email, pageable);
+
+        orderHistDtoList.getContent().forEach(list -> log.info("list: {}", list));
+        log.info("totalCount : {}", orderHistDtoList.getTotalElements());
     }
 }

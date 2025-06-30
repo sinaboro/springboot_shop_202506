@@ -1,10 +1,10 @@
 package com.example.shop.service;
 
 import com.example.shop.dto.OrderDto;
-import com.example.shop.entity.Item;
-import com.example.shop.entity.Member;
-import com.example.shop.entity.Order;
-import com.example.shop.entity.OrderItem;
+import com.example.shop.dto.OrderHistDto;
+import com.example.shop.dto.OrderItemDto;
+import com.example.shop.entity.*;
+import com.example.shop.repository.ItemImgRepository;
 import com.example.shop.repository.ItemRepository;
 import com.example.shop.repository.MemberRepository;
 import com.example.shop.repository.OrderRepository;
@@ -12,6 +12,9 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +30,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
     private final MemberRepository memberRepository;
+    private final ItemImgRepository itemImgRepository;
 
     //   orderDto(맥주, 2병), email(1번 테이블)
     public Long order(OrderDto orderDto, String email) {
@@ -52,5 +56,37 @@ public class OrderService {
         orderRepository.save(order);
 
         return order.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<OrderHistDto> getOrderList(String email, Pageable pageable) {
+
+        List<Order> orders = orderRepository.findOrders(email, pageable);
+
+        orders.forEach(order -> log.info(order.toString()));
+
+        Long totalCount = orderRepository.countOrder(email);
+
+        List<OrderHistDto> orderHistDtoList = new ArrayList<>();
+
+        for (Order order : orders) {
+            OrderHistDto orderHistDto = new OrderHistDto(order);
+
+            List<OrderItem> orderItems = order.getOrderItems();
+
+            for (OrderItem orderItem : orderItems) {
+               
+                // 상품 대표 이미지 추출
+                ItemImg itemImg = itemImgRepository
+                        .findByItemIdAndRepimgYn(orderItem.getItem().getId(), "Y");
+
+                OrderItemDto orderItemDto = new OrderItemDto(
+                        orderItem, itemImg.getImgUrl());
+
+                orderHistDto.addOrderItemDto(orderItemDto);
+            }
+            orderHistDtoList.add(orderHistDto);
+        }
+        return new PageImpl<>(orderHistDtoList, pageable, totalCount);
     }
 }
