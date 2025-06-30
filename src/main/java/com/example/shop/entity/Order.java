@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 @Getter@Setter
-//@ToString
+@ToString()
 public class Order extends BaseEntity {
 
     @Id

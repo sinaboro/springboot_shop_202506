@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "item")
 @Getter
-@ToString
+@ToString()
 @Setter
 public class Item extends BaseEntity {
 
