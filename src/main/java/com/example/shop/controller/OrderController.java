@@ -60,18 +60,15 @@ public class OrderController {
                             Principal principal,
                             Model model) {
 
-        log.info("orderHist --------------------------------1");
         Pageable pageable =
                 PageRequest.of(page.isPresent() ? page.get() : 0, 4 );
 
         Page<OrderHistDto> orderHistDtoList =
                 orderService.getOrderList(principal.getName(), pageable);
 
-        //${order.orderItemDtoList}
         model.addAttribute("orders", orderHistDtoList);
         model.addAttribute("page", pageable.getPageNumber());
         model.addAttribute("maxPage", 5);
-        log.info("orderHist --------------------------------2");
 
         return "order/orderHist";
     }

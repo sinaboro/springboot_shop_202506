@@ -18,7 +18,7 @@ public class OrderHistDto {
     private String orderDate;  //주문 날짜
     private OrderStatus orderStatus;  //주문 상태
 
-    //주문 리스트                orderItemDtoList
+    //주문 리스트
     private List<OrderItemDto> orderItemDtoList = new ArrayList<>();
 
     public OrderHistDto(Order order) {

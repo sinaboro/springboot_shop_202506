@@ -72,10 +72,6 @@ public class OrderService {
 
             List<OrderItem> orderItems = order.getOrderItems();
 
-            log.info("---------------------------------");
-            log.info("orderItems.size() : {}", orderItems.size());
-            log.info("---------------------------------");
-
             for (OrderItem orderItem : orderItems) {
                
                 // 상품 대표 이미지 추출

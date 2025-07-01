@@ -119,8 +119,12 @@
             </div>
         </div>
 
-    </div>
+    </div> <!-- end for  -->
 
+    <div th:text="${orders.number}"></div>
+    <div th:text="${orders.totalPages}"></div>
+
+    <!--페이징 처리-->
     <div th:with="start=${(orders.number/maxPage)*maxPage + 1}, end=(${(orders.totalPages == 0) ? 1 : (start + (maxPage - 1) < orders.totalPages ? start + (maxPage - 1) : orders.totalPages)})" >
         <ul class="pagination justify-content-center">
 
@@ -142,7 +146,7 @@
 
         </ul>
     </div>
-
+    <!--페이징 처리 end -->
 </div>
 
 </html>
