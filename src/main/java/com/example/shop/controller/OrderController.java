@@ -1,10 +1,14 @@
 package com.example.shop.controller;
 
 import com.example.shop.dto.OrderDto;
+import com.example.shop.dto.OrderHistDto;
 import com.example.shop.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -12,13 +16,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -52,4 +54,27 @@ public class OrderController {
 
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
+
+    @GetMapping(value = {"/orders","/orders/{page}"})
+    public String orderHist(@PathVariable("page") Optional<Integer> page,
+                            Principal principal,
+                            Model model) {
+
+        log.info("orderHist --------------------------------1");
+        Pageable pageable =
+                PageRequest.of(page.isPresent() ? page.get() : 0, 4 );
+
+        Page<OrderHistDto> orderHistDtoList =
+                orderService.getOrderList(principal.getName(), pageable);
+
+        //${order.orderItemDtoList}
+        model.addAttribute("orders", orderHistDtoList);
+        model.addAttribute("page", pageable.getPageNumber());
+        model.addAttribute("maxPage", 5);
+        log.info("orderHist --------------------------------2");
+
+        return "order/orderHist";
+    }
+
+
 }
