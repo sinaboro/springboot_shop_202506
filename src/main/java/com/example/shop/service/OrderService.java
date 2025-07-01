@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,8 @@ public class OrderService {
 
         Long totalCount = orderRepository.countOrder(email);
 
+
+
         List<OrderHistDto> orderHistDtoList = new ArrayList<>();
 
         for (Order order : orders) {
@@ -86,5 +89,30 @@ public class OrderService {
             orderHistDtoList.add(orderHistDto);
         }
         return new PageImpl<>(orderHistDtoList, pageable, totalCount);
+    }
+
+    //eamil(로그인 사용자), orderId(주문번호)
+    public boolean validateOrder(Long orderId, String email) {
+
+        Member curmember = memberRepository.findByEmail(email);
+
+        Order order = orderRepository.findById(orderId).
+                orElseThrow(() -> new EntityNotFoundException());
+
+        Member savedMember = order.getMember();
+
+        if(!StringUtils.equals(curmember.getEmail(), savedMember.getEmail())) {
+            return false;
+        }
+        return true;
+    }
+
+
+    //주문 취소
+    public void cancelOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new EntityNotFoundException());
+        
+        order.cancelOrder();
     }
 }
