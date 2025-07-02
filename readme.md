@@ -15,7 +15,7 @@
 ## 📷 장바구니 상품 이미지 예시
 ![장바구니 상품 이미지](cartItem_item.itemImg.JPG)
 
-<pre><code>'''java
+<pre><code>'''psql code
 @Query("select new com.example.shop.dto.CartDetailDto(ci.id, i.itemNm," +
 "i.price, ci.count, im.imgUrl) " +
 "from CartItem ci, ItemImg  im " +
@@ -28,7 +28,7 @@
 List<CartDetailDto> findCartDetatilDtolist(Long cartId);
 </code></pre>
 
-<pre><code>```sql 
+<pre><code>```sql code
 select ci.cart_item_id, i.item_nm, i.price, ci.count, im.img_url
 from cart_item ci 
 join item i
@@ -39,7 +39,7 @@ where im.repimg_Yn = 'Y'
 order by ci.reg_time desc;
 </code></pre>
 
-<pre><code>```queryDsl sql  
+<pre><code>```queryDsl code 
 QCartItem ci = QCartItem.cartItem;
 QItem i = QItem.item;
 QItemImg im = QItemImg.itemImg;
