@@ -38,3 +38,25 @@ on i.item_id  = im.item_id
 where im.repimg_Yn = 'Y'
 order by ci.reg_time desc;
 </code></pre>
+
+<pre><code>```queryDsl sql  
+QCartItem ci = QCartItem.cartItem;
+QItem i = QItem.item;
+QItemImg im = QItemImg.itemImg;
+
+List<CartDetailDto> results = queryFactory
+.select(Projections.constructor(
+CartDetailDto.class,
+ci.id,
+i.itemNm,
+i.price,
+ci.count,
+im.imgUrl
+))
+.from(ci)
+.join(ci.item, i)
+.join(im).on(im.item.id.eq(ci.item.id).and(im.repimgYn.eq("Y")))
+.where(ci.cart.id.eq(cartId))
+.orderBy(ci.regTime.desc())
+.fetch();
+</code></pre>
