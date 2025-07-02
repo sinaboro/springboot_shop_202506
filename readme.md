@@ -9,6 +9,10 @@
 ### 2.6 Build Tool - Gradle
 ### 2.7 IDE(통합개발환경) - IntelliJ
 
+
+## 📷 장바구니 상품 이미지 예시
+![장바구니 상품 이미지](cartItem_item.itemImg.JPG)
+
 <pre><code>'''java
 @Query("select new com.example.shop.dto.CartDetailDto(ci.id, i.itemNm," +
 "i.price, ci.count, im.imgUrl) " +
