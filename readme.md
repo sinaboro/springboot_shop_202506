@@ -8,7 +8,7 @@
 ### 2.5 ORM - JPA
 ### 2.6 Build Tool - Gradle
 ### 2.7 IDE(통합개발환경) - IntelliJ
-
+<br><br>
 
 ## 📷 장바구니 상품 이미지 예시
 ![장바구니 상품 이미지](cartItem_item.itemImg.JPG)
