@@ -9,7 +9,7 @@
 ### 2.6 Build Tool - Gradle
 ### 2.7 IDE(통합개발환경) - IntelliJ
 
-'''java
+<pre><code>'''java
 @Query("select new com.example.shop.dto.CartDetailDto(ci.id, i.itemNm," +
 "i.price, ci.count, im.imgUrl) " +
 "from CartItem ci, ItemImg  im " +
@@ -20,7 +20,7 @@
 "order by ci.regTime desc"
 )
 List<CartDetailDto> findCartDetatilDtolist(Long cartId);
-'''
+</code></pre>
 
 <pre><code>```sql 
 select ci.cart_item_id, i.item_nm, i.price, ci.count, im.img_url
