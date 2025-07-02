@@ -31,4 +31,4 @@ join item_img im
 on i.item_id  = im.item_id
 where im.repimg_Yn = 'Y'
 order by ci.reg_time desc;
-```</code></pre>
+</code></pre>
