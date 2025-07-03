@@ -135,12 +135,18 @@ public class CartService {
             orderDto.setCount(cartItem.getCount());
             orderDtoList.add(orderDto);
         }
+
         //[{itemId : 1, cout : 2}, {itemId : 2, cout : 5},{itemId : 3, cout : 4}]
         Long orderId = orderService.orders(orderDtoList, email);
 
+        //주문이 완료됐으므로 장바구니 비우기
+         for(CartOrderDto cartOrderDto : cartOrderDtoList){
+             CartItem cartItem = cartItemRepository.findById(cartOrderDto.getCartItemId())
+                     .orElseThrow(() -> new EntityNotFoundException());
+             cartItemRepository.delete(cartItem);
+         }
 
-
-        return null;
+        return orderId;
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.shop.controller;
 
 import com.example.shop.dto.CartDetailDto;
 import com.example.shop.dto.CartItemDto;
+import com.example.shop.dto.CartOrderDto;
 import com.example.shop.entity.Cart;
 import com.example.shop.service.CartService;
 import jakarta.validation.Valid;
@@ -88,6 +89,32 @@ public class CartController {
         cartService.deleteCartItem(cartItemId);
 
         return new ResponseEntity<Long>(cartItemId, HttpStatus.OK);
+    } // end DeleteMapping
+
+    //  var url = "/cart/orders";
+    //  paramData['cartOrderDtoList'] = dataList;
+    @PostMapping(value = "/cart/orders")
+    public @ResponseBody ResponseEntity<?> orders(@RequestBody CartOrderDto CartOrderDto,
+                                                  Principal principal){
+        log.info("CartOrderDto : {}", CartOrderDto);
+    //[CartOrderDto(cartItemId=253, cartOrderDtoList=null), CartOrderDto(cartItemId=252, cartOrderDtoList=null), CartOrderDto(cartItemId=1, cartOrderDtoList=null)]
+
+        List<CartOrderDto> cartOrderDtoList = CartOrderDto.getCartOrderDtoList();
+
+        if(cartOrderDtoList == null || cartOrderDtoList.size() == 0){
+            return new ResponseEntity<String>("주문 상품을 선택해 주세요", HttpStatus.BAD_REQUEST);
+        }
+
+        for(CartOrderDto cartOrderDto : cartOrderDtoList){
+            if(!cartService.validateCartItem(cartOrderDto.getCartItemId(), principal.getName())){
+                return new ResponseEntity<String>("수정 권한이 없습니다", HttpStatus.FORBIDDEN);
+            }
+        }
+
+        Long orderId = cartService.OrderCartItem(cartOrderDtoList, principal.getName());
+
+        return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
+
 
 }
