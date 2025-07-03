@@ -2,6 +2,8 @@ package com.example.shop.service;
 
 import com.example.shop.dto.CartDetailDto;
 import com.example.shop.dto.CartItemDto;
+import com.example.shop.dto.CartOrderDto;
+import com.example.shop.dto.OrderDto;
 import com.example.shop.entity.Cart;
 import com.example.shop.entity.CartItem;
 import com.example.shop.entity.Item;
@@ -30,6 +32,7 @@ public class CartService {
     private final ItemRepository itemRepository;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
+    private final OrderService orderService;
 
     public Long addCart(CartItemDto cartItemDto, String email) {
 
@@ -114,4 +117,30 @@ public class CartService {
         cartItemRepository.delete(cartItem);
 
     }
+
+    //{"cartOrderDtoList":[{"cartItemId":"253"},{"cartItemId":"252"},{"cartItemId":"1"}]}
+    public Long OrderCartItem(List<CartOrderDto> cartOrderDtoList, String email) {
+
+        List<OrderDto> orderDtoList = new ArrayList<>();
+
+        for(CartOrderDto cartOrderDto : cartOrderDtoList){
+            log.info("cartOrderDto : {}", cartOrderDto);
+
+            CartItem cartItem = cartItemRepository.findById(cartOrderDto.getCartItemId())
+                    .orElseThrow(() -> new EntityNotFoundException());
+
+            OrderDto orderDto  = new OrderDto();
+
+            orderDto.setItemId(cartItem.getItem().getId());
+            orderDto.setCount(cartItem.getCount());
+            orderDtoList.add(orderDto);
+        }
+        //[{itemId : 1, cout : 2}, {itemId : 2, cout : 5},{itemId : 3, cout : 4}]
+        Long orderId = orderService.orders(orderDtoList, email);
+
+
+
+        return null;
+    }
+
 }
