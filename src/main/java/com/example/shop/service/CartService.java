@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,5 +79,39 @@ public class CartService {
         cartDetailDtoList = cartItemRepository.findCartDetatilDtolist(cart.getId());
 
         return cartDetailDtoList;
+
+    } //end getCratList
+
+    @Transactional(readOnly = true)
+    public boolean validateCartItem(Long cartItemId, String email) {
+        Member member = memberRepository.findByEmail(email);
+
+        CartItem cartItem = cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new EntityNotFoundException());
+
+        Member savedMember = cartItem.getCart().getMember();
+
+        if(!StringUtils.equals(savedMember.getEmail(), member.getEmail())) {
+            return false;
+        }
+        return true;
+    }
+
+    public void updateCartItem(Long cartItemId, int count) {
+        CartItem cartItem = cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new EntityNotFoundException());
+
+        //스냅샷(cartItem)하고 비교해서 값이 변경감지(더티체킹)되기 때문에
+        //update구문을 실행
+        cartItem.setCount(count);
+    }
+
+    public void deleteCartItem(Long cartItemId) {
+
+        CartItem cartItem = cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new EntityNotFoundException());
+
+        cartItemRepository.delete(cartItem);
+
     }
 }
