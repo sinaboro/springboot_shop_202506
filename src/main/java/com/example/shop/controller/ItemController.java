@@ -105,10 +105,11 @@ public class ItemController {
         return "redirect:/";
     }
 
-    @GetMapping(value = {"/adim/items", "/admin/items/{page}"})
+    @GetMapping(value = {"/admin/items", "/admin/items/{page}"})
     public String itemManage(ItemSearchDto itemSearchDto,
                              @PathVariable("page") Optional<Integer> page, Model model) {
 
+        log.info("-----------/admin/items or /admin/items/{page}------------");
         //전달 받은 page 값이 있으면 그 값을 사용하고, 전달 받은 페이지가 없으면
         //1번 page, 3개 보여쥬~
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
